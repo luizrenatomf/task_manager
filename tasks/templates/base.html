@@ -20,22 +20,33 @@
             
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href="/">Tarefas</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="users/">Usuários</a>
                     </li>
+                    {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="about/">Sobre nós</a>
+                        <a class="nav-link" href="/accounts/login">Entrar</a>
                     </li>
+                    {% endif %}                        
+                    <li class="nav-item">
+                        <a class="nav-link" href="about/">Sobre</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/accounts/logout">Sair</a>
+                    </li>
+                    {% endif %}                    
                 </ul>
             </div>
         </nav>
         {% block content %}
         {% endblock %}
         <footer>
-            <p>horaDeCodar ToDo</p>
+            <p>To-Do</p>
         </footer>
     </div>
     <script src="https://code.jquery.com/jquery-3.4.0.min.js" integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script>
