@@ -5,26 +5,34 @@ from django.http import HttpResponse
 from django.contrib import messages
 import datetime
 
-from .models import Task
-from .forms import TaskForm
+from .models import Task, Tag
+from .forms import TaskForm, TagForm
 
 @login_required
 def taskList(request):
 	search = request.GET.get('search')
 	filter = request.GET.get('filter')
-	tasksDoneRecently = Task.objects.filter(done='done',updated_at__gt=datetime.datetime.now()-datetime.timedelta(days=30),user=request.user).count()
-	tasksDone = Task.objects.filter(done='done',user=request.user).count()
+
+	# Para contagem no cabeçalho
+	tasksDoneRecently = Task.objects.filter(done='done',updated_at__gt=datetime.datetime.now()-datetime.timedelta(days=30),user=request.user).count() 
+	tasksDone = Task.objects.filter(done='done',user=request.user).count() 
 	tasksDoing = Task.objects.filter(done='doing',user=request.user).count()
+
+	# Para enviar ao template
+	filtros = dict(Task.STATUS).keys()
+	now = datetime.date.today()
+
 	if search:
 		tasks = Task.objects.filter(title__icontains=search,user=request.user)
 	elif filter:
 		tasks = Task.objects.filter(done=filter,user=request.user)
 	else:
-		tasks_list = Task.objects.all().order_by('-created_at').filter(user=request.user)
-		paginator = Paginator(tasks_list,10)
+		tasks = Task.objects.all().order_by('-created_at').filter(user=request.user)
+		paginator = Paginator(tasks,7)
 		page = request.GET.get('page')
 		tasks = paginator.get_page(page)
-	return render(request,'tasks/list.html',{'tasks':tasks,'tasksrecently':tasksDoneRecently,'tasksdone':tasksDone,'tasksdoing':tasksDoing})
+	
+	return render(request,'tasks/list.html',{'tasks':tasks,'tasksrecently':tasksDoneRecently,'tasksdone':tasksDone,'tasksdoing':tasksDoing,'now':now,'filtros':filtros})
 
 
 @login_required
@@ -36,17 +44,25 @@ def taskView(request,id):
 @login_required
 def newTask(request):
 	if request.method == 'POST':
-		form = TaskForm(request.POST)
+		form_task = TaskForm(request.POST)
+		
+		if form_task.is_valid():
+			form_task = form_task.save(commit=False)
+			form_task.user = request.user
+			form_task.done = 'doing'
+			form_task.save()
 
-		if form.is_valid():
-			task = form.save(commit=False)
-			task.user = request.user
-			task.done = 'doing'
-			task.save()
-			return redirect('/')
+		form_tag = TagForm(request.POST,instance=form_task)
+		if form_tag.is_valid():
+			form_tag = form_tag.save(commit=False)
+			form_tag.task = form_task.id
+			form_tag.save()
+			
+		return redirect('/')
 	else:	
-		form = TaskForm()
-		return render(request, 'tasks/addtask.html',{'form':form})
+		form_task = TaskForm()
+		form_tag = TagForm()
+		return render(request,'tasks/addtask.html',{'form1':form_task,'form2':form_tag})
 
 
 @login_required
@@ -81,3 +97,9 @@ def changeStatus(request,id):
 		task.done = 'doing'
 	task.save()
 	return redirect('/')
+
+
+@login_required
+def dashboard(request):
+	pass
+	

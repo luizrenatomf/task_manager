@@ -9,7 +9,7 @@
 	<form method="POST">
 		{% csrf_token %}
 		{{form|crispy}}
-		<input type="submit" name="btn btn-success" value="Editar tarefa">
+		<input type="submit" class="btn btn-success" value="Editar tarefa">
 	</form>
 </div>
 {% endblock %}

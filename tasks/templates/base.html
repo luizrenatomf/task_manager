@@ -25,7 +25,7 @@
                         <a class="nav-link" href="/">Tarefas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="users/">Usuários</a>
+                        <a class="nav-link" href="/accounts/login">Usuários</a>
                     </li>
                     {% else %}
                     <li class="nav-item">
@@ -43,8 +43,10 @@
                 </ul>
             </div>
         </nav>
+
         {% block content %}
         {% endblock %}
+        
         <footer>
             <p>To-Do</p>
         </footer>

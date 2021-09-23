@@ -5,6 +5,19 @@
 {% block content %}
 <div class="offset-1 col-10 list-div">
 	<h1>{{task.title}}</h1>
+    <br>
+    <h6>Created: {{task.created_at}}</h6>
+    <h6>Do Date: {{task.do_date}}</h6>
+    <br>
 	<p>{{task.description}}</p>
+    {% if tag %}
+        <h2>Task tagged with "{{ tag.name }}"</h2>
+    {% endif %}
+    <p class="tags">
+    {% for tag in tasks.tags.all %}
+        <a href="{% url 'task:task_list_by_tag' tag.slug %}">{{ tag.name }}</a>
+    {% if not forloop.last %}, {% endif %}
+    {% endfor %}
+    </p>
 </div>
 {% endblock %}
