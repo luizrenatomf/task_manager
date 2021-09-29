@@ -68,6 +68,7 @@ def editTask(request,id):
 		form = TaskForm(request.POST,instance=task)
 		if form.is_valid():
 			task.save()
+			messages.success(request,'Tarefa atualizada com sucesso')
 			return redirect('/')
 		else:
 			return render(request,'tasks/edittask.html',{'form':form,'task':task})
@@ -91,5 +92,6 @@ def changeStatus(request,id):
 	else:
 		task.done = 'doing'
 	task.save()
+	messages.success(request,'Tarefa atualizada com sucesso')
 	return redirect('/')
-	
+

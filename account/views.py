@@ -11,10 +11,11 @@ from tasks.models import Task
 
 @login_required
 def dashboard(request):
-	doneRecently = Task.objects.filter(done='done',updated_at__gt=datetime.datetime.now()-datetime.timedelta(days=30),user=request.user).count()
-	done = Task.objects.filter(done='done',user=request.user).count()
-	doing = Task.objects.filter(done='doing',user=request.user).count()
-	return render(request,'account/dashboard.html',{'doneRecentyl':doneRecently,'done':done,'doing':doing})
+	tasksDoneRecently = Task.objects.filter(done='done',updated_at__gt=datetime.datetime.now()-datetime.timedelta(days=30),user=request.user).count() 
+	tasksDone = Task.objects.filter(done='done',user=request.user).count() 
+	tasksDoing = Task.objects.filter(done='doing',user=request.user).count()
+
+	return render(request,'account/dashboard.html',{'tasksrecently':tasksDoneRecently,'tasksdone':tasksDone,'tasksdoing':tasksDoing,})
 
 
 def register(request):
