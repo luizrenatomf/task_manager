@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load tasks_tags %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+	<h1>Dashboard</h1>
+	<p>Welcome to your dashboard, {{ request.user.first_name }}.</p>
+
+    <div class="container dashboard">
+        <div class="col-4 dashboard-box" id="dashboard-lastdays">
+            <h4>Finalizadas nos últimos 30 dias</h4>
+            <span>{{ doneRecentyl }}</span>
+        </div>
+        <div class="col-4 dashboard-box" id="dashboard-done">
+            <h4>Tarefas finalizadas</h4>
+            <span>{{ done }}</span>
+        </div>
+        <div class="col-4 dashboard-box" id="dashboard-doing">
+            <h4>Tarefas para fazer</h4>
+            <span>{{ doing }}</span>
+        </div>
+    </div>
+    <div class="container">
+        <p>Click <a href="{% url 'task-list' %}">here</a> to see your task-list.</p>
+        <p>You can also <a href="{% url 'edit' %}">edit your profile</a> or <a href="{% url 'password_change' %}">change your password</a>.</p>    
+    </div>
+
+{% endblock %}
