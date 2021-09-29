@@ -10,5 +10,4 @@ urlpatterns = [
 	path('delete/<int:id>',views.deleteTask,name='delete-task'),
 	path('changestatus/<int:id>',views.changeStatus,name='change-status'),
 	path('tag/<slug:tag_slug>/',views.taskList,name='task_list_by_tag'),
-	path('dashboard/',views.dashboard,name='dashboard'),
 ]

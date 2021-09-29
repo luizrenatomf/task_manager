@@ -13,11 +13,6 @@ def taskList(request):
 	search = request.GET.get('search')
 	filter = request.GET.get('filter')
 
-	# Para contagem no cabeçalho
-	tasksDoneRecently = Task.objects.filter(done='done',updated_at__gt=datetime.datetime.now()-datetime.timedelta(days=30),user=request.user).count() 
-	tasksDone = Task.objects.filter(done='done',user=request.user).count() 
-	tasksDoing = Task.objects.filter(done='doing',user=request.user).count()
-
 	# Para enviar ao template
 	filtros = dict(Task.STATUS).keys()
 	now = datetime.date.today()
@@ -32,7 +27,7 @@ def taskList(request):
 		page = request.GET.get('page')
 		tasks = paginator.get_page(page)
 	
-	return render(request,'tasks/list.html',{'tasks':tasks,'tasksrecently':tasksDoneRecently,'tasksdone':tasksDone,'tasksdoing':tasksDoing,'now':now,'filtros':filtros})
+	return render(request,'tasks/list.html',{'tasks':tasks,'now':now,'filtros':filtros})
 
 
 @login_required
@@ -73,6 +68,7 @@ def editTask(request,id):
 		form = TaskForm(request.POST,instance=task)
 		if form.is_valid():
 			task.save()
+			messages.success(request,'Tarefa atualizada com sucesso')
 			return redirect('/')
 		else:
 			return render(request,'tasks/edittask.html',{'form':form,'task':task})
@@ -96,10 +92,5 @@ def changeStatus(request,id):
 	else:
 		task.done = 'doing'
 	task.save()
+	messages.success(request,'Tarefa atualizada com sucesso')
 	return redirect('/')
-
-
-@login_required
-def dashboard(request):
-	pass
-	
