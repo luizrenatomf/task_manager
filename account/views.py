@@ -14,7 +14,6 @@ def dashboard(request):
 	tasksDoneRecently = Task.objects.filter(done='done',updated_at__gt=datetime.datetime.now()-datetime.timedelta(days=30),user=request.user).count() 
 	tasksDone = Task.objects.filter(done='done',user=request.user).count() 
 	tasksDoing = Task.objects.filter(done='doing',user=request.user).count()
-
 	return render(request,'account/dashboard.html',{'tasksrecently':tasksDoneRecently,'tasksdone':tasksDone,'tasksdoing':tasksDoing,})
 
 

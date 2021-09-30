@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Add a new topic{% endblock %}
+
+{% block content %}
+<div class="offset-1 col-10 list-div">
+    <form action="{% url 'new_topic' %}" method="post" class="form">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit" class="btn btn-success" value="Adicionar tópico">
+    </form>
+</div>
+{% endblock %}

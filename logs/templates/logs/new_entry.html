@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}New entry{% endblock %}
+
+{% block content %}
+<div class="offset-1 col-10 list-div">
+  <p><a href="{% url 'topic' topic.id %}">{{ topic }}</a></p>
+
+  <p>Add a new entry:</p>
+  <form action="{% url 'new_entry' topic.id %}" method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button name="submit">add entry</button>
+  </form>
+</div>
+{% endblock content %}

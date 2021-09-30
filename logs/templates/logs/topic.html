@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}{{ topic }}{% endblock %}
+
+{% block content %}
+<div class="offset-1 col-10 list-div">
+  <p>
+      <a href="{% url 'new_entry' topic.id %}">add new entry</a>
+  </p>
+
+  {% for entry in entries %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            {{ entry.date_added|date:'d M, Y H:i' }}
+            <small>
+                <a href="{% url 'edit_entry' entry.id %}">edit entry</a>
+            </small>
+        </div>
+        <div class="panel-body">
+            {{ entry.text|linebreaks }}
+        </div>
+    </div>
+    {% empty %}
+        There are no entries for this topic yet.
+  {% endfor %}
+</div>
+{% endblock content %}
