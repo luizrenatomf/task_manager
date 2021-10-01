@@ -5,6 +5,7 @@
 {% block content %}
     <div class="offset-1 col-10 list-div">
     	<h1>Dashboard</h1>
+        {% include 'messages.html' %}
     	<p>Welcome to your dashboard, {{ request.user.first_name }}.</p>
         <div class="container dashboard">
             <div class="col-4 dashboard-box" id="dashboard-lastdays">

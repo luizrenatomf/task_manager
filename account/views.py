@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -44,8 +44,10 @@ def edit(request):
 			user_form.save()
 			profile_form.save()
 			messages.success(request,'Profile updated successfully')
+			return redirect('/account/')
 		else:
 			messages.error(request,'Error updating your profile')
+			return redirect('/account/edit')
 	else:
 		user_form = UserEditForm(instance=request.user)
 		profile_form = ProfileEditForm(instance=request.user.profile)

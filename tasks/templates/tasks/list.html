@@ -20,14 +20,8 @@
                 <option value="{{filtro}}">{{filtro.title}}</option>
             {% endfor %}
         </select>
-    </div> 
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li {% if message.tags %}class="alert alert-{{message.tags}}"{% endif %}>{{message}}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+    </div>
+    {% include 'messages.html' %}
     <div class="container-tasks-list">   
         <ul class="task-list">
             {% for task in tasks %}
@@ -40,7 +34,7 @@
             {% endif %}
                 <div class="row">
                     <div class="col-sm">
-                        </p><span><a href="/task/{{task.id}}">{{task.title}}</a></span>
+                        <span><a href="/task/{{task.id}}">{{task.title}}</a></span>
                     </div>
                     <div class="col-2sm">
                         {% if task.do_date < now %}

@@ -52,7 +52,7 @@ def newTask(request):
 			form_tag = form_tag.save(commit=False)
 			form_tag.task = form_task.id
 			form_tag.save()
-			
+		messages.success(request,'Tarefa criada com sucesso')
 		return redirect('/')
 	else:	
 		form_task = TaskForm()
