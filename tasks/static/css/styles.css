@@ -148,6 +148,10 @@
     border-bottom: 1px dashed #353839;
 }
 
+.task-item a {
+    cursor: pointer;
+}
+
 .task-item p {
     display: inline-block;
     font-size: 14px;

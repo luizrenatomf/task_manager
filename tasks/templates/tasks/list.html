@@ -5,7 +5,9 @@
 {% block content %}
 <div class="offset-1 col-10 list-div">
     <h1>Lista de Tarefas</h1>
-    <a id="add-link" href="newtask/"><div class="col-2 add-div"><i class="fas fa-plus"></i> Adicionar tarefa</div></a>
+    <a onclick="abrir_modal_criar('{% url 'nova-task' %}')"><div class="col-2 add-div"><i class="fas fa-plus"></i> Adicionar tarefa</div></a>
+    <div class="modal fade" id="nova-task" role="dialog"></div>
+    <!-- <a id="add-link" href="newtask/"><div class="col-2 add-div"><i class="fas fa-plus"></i> Adicionar tarefa</div></a> -->
     <div class="col-6 search-div">
         <form method="GET" id="search-form">
             <input class="form-control" type="text" id="search" name="search" placeholder="Digite o nome da tarefa para buscar..." value="{{request.GET.search}}">
@@ -34,8 +36,8 @@
             {% endif %}
                 <div class="row">
                     <div class="col-sm">
-                        <span><a href="#" data-toggle="modal" data-target="#task_detail">{{task.title}}</a></span>
-                        {% include "tasks/task.html" %}
+                        <a onclick="abrir_modal_view('{% url 'task-view' task.id %}')">{{ task.title }}</a>
+                        <div class="modal fade" id="view-task" role="dialog"></div>
                     </div>
                     <div class="col-2sm">
                         {% if task.do_date < now %}
@@ -48,8 +50,8 @@
                     </div>
                     <div class="col-sm">
                         <a href="delete/{{task.id}}" class="delete-btn"><span><i class="fas fa-trash"></i></span></a>
-                        <a href="#" data-toggle="modal" data-target="#task_edit"><span><i class="fas fa-edit"></i></span></a>
-                        {% include "tasks/edittask.html" %}
+                        <a onclick="abrir_modal_edicao('{% url 'edit-task' task.id %}')"><span><i class="fas fa-edit"></i></span></a>
+                        <div class="modal fade" id="edit-task" role="dialog"></div>
                         <a href="changestatus/{{task.id}}"><span><i class="fas fa-check"></i></span></a>
                     </div>
                 </div>
@@ -73,4 +75,27 @@
         </span>
     </div>
 </div>
+{% endblock %}
+
+{% block extrajs %}
+<script type="text/javascript">
+    var $ = jQuery.noConflict();
+    function abrir_modal_edicao(url){
+        $('#edit-task').load(url, function (){
+            $(this).modal('show');
+        })
+    }
+
+    function abrir_modal_view(url){
+        $('#view-task').load(url, function (){
+            $(this).modal('show');
+        })
+    }
+
+    function abrir_modal_criar(url){
+        $('#nova-task').load(url, function (){
+            $(this).modal('show');
+        })
+    }
+</script>
 {% endblock %}

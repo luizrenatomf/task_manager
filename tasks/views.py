@@ -1,12 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
+from django.urls import reverse_lazy
 import datetime
 
-from .models import Task, Tag
-from .forms import TaskForm, TagForm
+from .models import Task
+from .forms import TaskForm
 
 @login_required
 def taskList(request):
@@ -47,33 +48,27 @@ def newTask(request):
 			form_task.done = 'doing'
 			form_task.save()
 
-		form_tag = TagForm(request.POST,instance=form_task)
-		if form_tag.is_valid():
-			form_tag = form_tag.save(commit=False)
-			form_tag.task = form_task.id
-			form_tag.save()
 		messages.success(request,'Tarefa criada com sucesso')
 		return redirect('/')
 	else:	
 		form_task = TaskForm()
-		form_tag = TagForm()
-		return render(request,'tasks/addtask.html',{'form1':form_task,'form2':form_tag})
+		return render(request,'tasks/addtask.html',{'form1':form_task,})
 
 
 @login_required
 def editTask(request,id):
 	task = get_object_or_404(Task,pk=id)
-	form = TaskForm(instance=task)
+	form_task = TaskForm(instance=task)
 	if request.method == 'POST':
-		form = TaskForm(request.POST,instance=task)
-		if form.is_valid():
+		form_task = TaskForm(request.POST,instance=task)
+		if form_task.is_valid():
 			task.save()
 			messages.success(request,'Tarefa atualizada com sucesso')
-			return redirect('/')
+			return HttpResponseRedirect(reverse_lazy('task-list'))
 		else:
-			return render(request,'tasks/edittask.html',{'form':form,'task':task})
+			return render(request,'tasks/edittask.html',{'form_task':form_task,'task':task})
 	else:
-		return render(request,'tasks/edittask.html',{'form':form,'task':task})
+		return render(request,'tasks/edittask.html',{'form_task':form_task,'task':task})
 
 
 @login_required
