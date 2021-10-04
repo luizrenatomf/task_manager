@@ -34,7 +34,8 @@
             {% endif %}
                 <div class="row">
                     <div class="col-sm">
-                        <span><a href="/task/{{task.id}}">{{task.title}}</a></span>
+                        <span><a href="#" data-toggle="modal" data-target="#task_detail">{{task.title}}</a></span>
+                        {% include "tasks/task.html" %}
                     </div>
                     <div class="col-2sm">
                         {% if task.do_date < now %}
@@ -47,7 +48,8 @@
                     </div>
                     <div class="col-sm">
                         <a href="delete/{{task.id}}" class="delete-btn"><span><i class="fas fa-trash"></i></span></a>
-                        <a href="edit/{{task.id}}"><span><i class="fas fa-edit"></i></span></a>
+                        <a href="#" data-toggle="modal" data-target="#task_edit"><span><i class="fas fa-edit"></i></span></a>
+                        {% include "tasks/edittask.html" %}
                         <a href="changestatus/{{task.id}}"><span><i class="fas fa-check"></i></span></a>
                     </div>
                 </div>
